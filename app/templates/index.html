@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block content %} {% load static%}
+
+<div class="container">
+    </br>
+    <p>相談したい著者を選んで質問をしてみましょう</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <select name="engine type">
+            <option value="kounosuke-matsusita">松下幸之助(著者名)</option>
+            <option value="takahumi-horie">堀江貴文</option>
+        </select>
+        <input type="submit" value="送信">
+    </br>
+    </br>
+        <div>
+          <textarea id="input-text" name="input-text" rows="3" cols="50">{{ input_text }}</textarea>
+        </div>
+    </form>
+    </br>
+    {{ response }}
+</div>
+
+    
+{% endblock %}
