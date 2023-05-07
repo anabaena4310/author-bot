@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% block content %} {% load static%}
+
+<div class="container">
+    <h3>著者新規登録</h3>
+    </br>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">送信</button>
+    </form>
+    </br>
+</div>
+
+    
+{% endblock %}

@@ -1,5 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+
+from .form import AuthorForm
+from . models import AuthorInfo
 
 import openai
 import os
@@ -24,7 +29,7 @@ class IndexView(TemplateView):
         integrated_text = ""
         response = openai.Completion.create(
             engine="text-davinci-003",
-            prompt="私: " + input_text + "\n松下幸之助: ",
+            prompt="私: " + input_text + "\n松下幸之助:社長として回答します。 ",
             temperature=0.7,
             max_tokens=200,
             top_p=1,
@@ -46,3 +51,13 @@ class IndexView(TemplateView):
             'input_text': input_text,
         }
         return render(request, 'index.html', context)
+    
+class AuthorCreateView(CreateView):
+    model = AuthorInfo
+    template_name = "post_author.html"
+    form_class = AuthorForm
+    success_url = reverse_lazy("app:author_create")
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
