@@ -14,8 +14,8 @@ class AuthorInfo(models.Model):
     book_name3 = models.CharField(max_length=30, blank=True)
     book_content3 = models.TextField(blank=True)
 
-# class BookInfo(models.Model):
-#     book_name = models.CharField(max_length=30)
-#     text = models.TextField()
-#     author = models.ForeignKey(AuthorInfo, on_delete=models.CASCADE)
-    # part分けは要検討
+class BookInfo(models.Model):
+    book_name = models.CharField(max_length=30)
+    # part_content_sum_list は「,」区切りのリストとして扱う
+    part_content_sum_list = models.CharField(max_length=10000)
+    author = models.ForeignKey(AuthorInfo, on_delete=models.CASCADE)

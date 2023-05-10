@@ -4,7 +4,7 @@ from django.views.generic import CreateView
 from django.urls import reverse_lazy
 
 from .form import AuthorForm
-from . models import AuthorInfo
+from . models import AuthorInfo, BookInfo
 
 import openai
 import os
@@ -29,6 +29,7 @@ class IndexView(TemplateView):
         integrated_text = ""
         response = openai.Completion.create(
             engine="text-davinci-003",
+            # UIで選択した著者ジャンルに応じて切り替わるようにpromptを設計！
             prompt="私: " + input_text + "\n松下幸之助:社長として回答します。 ",
             temperature=0.7,
             max_tokens=200,
@@ -61,3 +62,5 @@ class AuthorCreateView(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+    
+    # BookInfoに要約を登録する処理を書く
