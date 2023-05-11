@@ -5,9 +5,11 @@
     <p>相談したい著者を選んで質問をしてみましょう</p>
     <form action="" method="post">
         {% csrf_token %}
-        <select name="engine type">
-            <option value="kounosuke-matsusita">松下幸之助(著者名)</option>
-            <option value="takahumi-horie">堀江貴文</option>
+        著者選択：<select name="author_id" id="author_id">
+
+                {% for author_info in author_infos %}
+                    <option value={{author_info.id}}>{{ author_info.author_name }}</option>
+                {% endfor %}
         </select>
         <input type="submit" value="送信">
     </br>
