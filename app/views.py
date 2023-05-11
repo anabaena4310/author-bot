@@ -8,12 +8,12 @@ from . models import AuthorInfo, BookInfo
 
 import openai
 import os
-import environ
+# pythonanywhereにデプロイするときは以下は消すこと
+#import environ
 
-
-env = environ.Env()
-env.read_env(os.path.join(os.path.dirname(
-    os.path.dirname(os.path.abspath(__file__))), '.env'))
+# env = environ.Env()
+# env.read_env(os.path.join(os.path.dirname(
+#     os.path.dirname(os.path.abspath(__file__))), '.env'))
 
 # .envファイルをpushしない！！！
 
@@ -36,6 +36,7 @@ class IndexView(TemplateView):
         }
         return render(request, 'index.html', context)
     def post(self, request, *args, **kwargs):
+        openai.api_key = os.environ['GPT3_KEY']
         author_info_model = AuthorInfo.objects.all()
         input_text = request.POST['input-text']
         selected_author_id = request.POST['author_id']
@@ -44,10 +45,13 @@ class IndexView(TemplateView):
                           selected_author_info.book_name2, 
                           selected_author_info.book_name3]
         
+        # 著書要約返信機能（最終的に、複数の章の要約をDBに保存でき、その中からランダムに返答できるようにする）
         for i, book_name in enumerate(book_name_list):
             if has_common_string(book_name, input_text):
                 chatbot_response = BookInfo.objects.get(book_name=book_name).part_content_sum_list
                 break
+            elif "自己紹介" in input_text:
+                chatbot_response = selected_author_info.intoroduction
             else:
                 integrated_text = ""
                 response = openai.Completion.create(
@@ -88,6 +92,7 @@ class AuthorCreateView(CreateView):
     
     # BookInfoに要約を登録する処理を書く
     def post(self, request):
+        openai.api_key = os.environ['GPT3_KEY']
         request_data = request.POST
 
         author_info_model = AuthorInfo(author_name=request_data["author_name"],
