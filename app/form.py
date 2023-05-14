@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from .models import AuthorInfo
 
 class AuthorForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(AuthorForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():

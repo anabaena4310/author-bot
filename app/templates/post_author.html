@@ -3,7 +3,7 @@
 <div class="container">
     <h3>著者新規登録</h3>
     </br>
-    <form action="" method="post">
+    <form action="" method="post" enctype='multipart/form-data'>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">送信</button>
